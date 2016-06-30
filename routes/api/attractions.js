@@ -8,7 +8,7 @@ var Promise = require('bluebird');
 module.exports = router;
 
 router.get('/hotels', function (req, res, next) {
-    Hotel.findAll()
+    Hotel.findAll({ include: [Place] })
     .then(function(hotels) {
         res.json(hotels);
     })
@@ -16,7 +16,7 @@ router.get('/hotels', function (req, res, next) {
 });
 
 router.get('/restaurants', function (req, res, next) {
-    Restaurant.findAll()
+    Restaurant.findAll({ include: [Place] })
     .then(function(restaurants) {
         res.json(restaurants);
     })
@@ -24,7 +24,7 @@ router.get('/restaurants', function (req, res, next) {
 });
 
 router.get('/activities', function (req, res, next) {
-    Activity.findAll()
+    Activity.findAll({ include: [Place] })
     .then(function(activities) {
         res.json(activities);
     })

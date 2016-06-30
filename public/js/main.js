@@ -32,9 +32,6 @@ $(function () {
     })
     .fail(console.error.bind(console));
 
-
-
-
     // collections = {
     //     hotel: hotels,
     //     restaurant: restaurants,
@@ -49,17 +46,15 @@ $(function () {
     var $dayButtonList = $('.day-buttons');
 
     var days = [
-        
+        []
+    ];
 
-        ];
-        $.get( "/api/days", function(days){
-           days.forEach(function(day){
-            days.push([])
-           })     
+    $.get('/api/days', function(days){
+        days.forEach(function(day){
+            days.push([]);
+        });
+    });
 
-        })
-
-    
     var currentDayNum = 1;
 
     /*
@@ -77,8 +72,19 @@ $(function () {
         var $list = $listGroups[sectionName];
         var collection = collections[sectionName];
         var item = findInCollection(collection, itemId);
-
         var marker = drawMarker(map, sectionName, item.place.location);
+
+        console.log(sectionName);
+
+        $.ajax({
+            type: "PUT",
+            url: '/api/days/' + currentDayNum + '/' + sectionName,
+            data: { id: item.id },
+            success: function(response){
+                // console.log(response)
+            },
+            dataType: 'json'
+        });
 
         $list.append(create$item(item));
 
@@ -116,8 +122,6 @@ $(function () {
         $addDayButton.before($newDayButton);
         switchDay(newDayNum);
 
-        
-
     });
 
     $dayButtonList.on('click', '.day-btn', function () {
@@ -126,15 +130,14 @@ $(function () {
     });
 
     $removeDayButton.on('click', function () {
-
-
         wipeDay();
         days.splice(currentDayNum - 1, 1);
         $.ajax({
             type: "DELETE",
             url: '/api/days/'+currentDayNum,
             success: function(response){
-                console.log(response)},
+                console.log(response)
+            },
             dataType: 'json'
         })
 
