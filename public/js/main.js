@@ -32,6 +32,9 @@ $(function () {
     })
     .fail(console.error.bind(console));
 
+
+
+
     // collections = {
     //     hotel: hotels,
     //     restaurant: restaurants,
@@ -46,9 +49,17 @@ $(function () {
     var $dayButtonList = $('.day-buttons');
 
     var days = [
-        []
-    ];
+        
 
+        ];
+        $.get( "/api/days", function(days){
+           days.forEach(function(day){
+            days.push([])
+           })     
+
+        })
+
+    
     var currentDayNum = 1;
 
     /*
@@ -101,8 +112,12 @@ $(function () {
         var newDayNum = days.length + 1;
         var $newDayButton = createDayButton(newDayNum);
         days.push([]);
+        $.post("/api/days",{number: newDayNum}) //sends to the post route which posts to db 
         $addDayButton.before($newDayButton);
         switchDay(newDayNum);
+
+        
+
     });
 
     $dayButtonList.on('click', '.day-btn', function () {
@@ -112,8 +127,16 @@ $(function () {
 
     $removeDayButton.on('click', function () {
 
+
         wipeDay();
         days.splice(currentDayNum - 1, 1);
+        $.ajax({
+            type: "DELETE",
+            url: '/api/days/'+currentDayNum,
+            success: function(response){
+                console.log(response)},
+            dataType: 'json'
+        })
 
         if (days.length === 0) {
             days.push([]);

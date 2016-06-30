@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require('express');  
 var router = express.Router();
 var Hotel = require('../../models/hotel');
 var Restaurant = require('../../models/restaurant');
@@ -30,3 +30,4 @@ router.get('/activities', function (req, res, next) {
     })
     .catch(next);
 });
+//this gets info from datable 
