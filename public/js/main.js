@@ -9,11 +9,34 @@ $(function () {
         activity: $('#activity-list').children('ul')
     };
 
-    var collections = {
-        hotel: hotels,
-        restaurant: restaurants,
-        activity: activities
-    };
+    var collections = {};
+
+    $.get('/api/hotels')
+    .done(function(hotels) {
+        collections.hotel = hotels;
+        fillInOptions(hotels, $('#hotel-choices'));
+    })
+    .fail(console.error.bind(console));
+
+    $.get('/api/restaurants')
+    .done(function(restaurants) {
+        collections.restaurant = restaurants;
+        fillInOptions(restaurants, $('#restaurant-choices'));
+    })
+    .fail(console.error.bind(console));
+
+    $.get('/api/activities')
+    .done(function(activities) {
+        collections.activity = activities;
+        fillInOptions(activities, $('#activity-choices'));
+    })
+    .fail(console.error.bind(console));
+
+    // collections = {
+    //     hotel: hotels,
+    //     restaurant: restaurants,
+    //     activity: activities
+    // };
 
     var $itinerary = $('#itinerary');
 
@@ -101,9 +124,9 @@ $(function () {
 
     });
 
-    fillInOptions(hotels, $('#hotel-choices'));
-    fillInOptions(restaurants, $('#restaurant-choices'));
-    fillInOptions(activities, $('#activity-choices'));
+    // fillInOptions(hotels, $('#hotel-choices'));
+    // fillInOptions(restaurants, $('#restaurant-choices'));
+    // fillInOptions(activities, $('#activity-choices'));
 
     /*
     --------------------------
